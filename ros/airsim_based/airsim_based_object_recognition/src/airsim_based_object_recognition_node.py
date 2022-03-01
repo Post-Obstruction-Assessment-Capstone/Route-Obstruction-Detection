@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Author: Trevor Sherrard
 # Since: Feburary 24, 2022
 # Project: UAV Based Post Obstruction Assesment Captsone Project
@@ -24,7 +26,7 @@ class AirsimObjectDetection:
 
     def start_node(self):
         # start ROS node
-        rospy.init("airsim_based_drone_detection_node")
+        rospy.init_node("airsim_based_drone_detection_node")
         rospy.loginfo("started airsim_based_drone_detection_node!")
 
         # get ROS params from launch file
@@ -51,23 +53,24 @@ class AirsimObjectDetection:
         # loop through all camera names and clear previus detection filter
         # settings
         for camera_name in self.camera_name_list:
-            client.simClearDetectionMeshNames(camera_name, self.image_type)
+            self.client.simClearDetectionMeshNames(camera_name, self.image_type)
 
         # loop through all camera names and set detection filter radius
         # and mesh filer regex
         for camera_name in self.camera_name_list:
-            client.simSetDetectionFilterRadius(camera_name, self.image_type, self.detection_radius)
-            client.simAddDetectionFilterMeshName(camera_name, self.image_type, self.mesh_match_regex)
+            self.client.simSetDetectionFilterRadius(camera_name, self.image_type, self.detection_radius)
+            self.client.simAddDetectionFilterMeshName(camera_name, self.image_type, self.mesh_match_regex)
 
         # if we got this far, return true
         return True
 
-    def do_object_detection():
+    def do_object_detection(self):
         while(not rospy.is_shutdown()):
             # loop through each provided camera and try to get 
             # detections
             for camera_name in self.camera_name_list:
-                detections = client.simGetDetections(camera_name, self.image_type)
+                detections = self.client.simGetDetections(camera_name, self.image_type)
+                print(detections)
 
     def pub_images_and_data(self):
         pass
