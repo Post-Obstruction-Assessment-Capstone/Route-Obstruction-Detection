@@ -1,0 +1,7 @@
+string camera_name
+string obstacle_name
+uint32 bbox_TL_col
+uint32 bbox_TL_row
+uint32 bbox_BR_col
+uint32 bbox_BR_row
+geometry_msgs/Pose relative_pose

@@ -1,6 +1,6 @@
 <launch>
     <node pkg="airsim_based_object_recognition" name="airsim_based_object_recognition_node" type="airsim_based_object_recognition_node.py" output="screen">
-        <param name="mesh_match_regex" value="templatecube[\w]*" />
+        <param name="mesh_match_regex" value="OrangeBall" />
         <param name="camera_name_list" value="[0, 1, 2]" />
     </node>
 </launch>
