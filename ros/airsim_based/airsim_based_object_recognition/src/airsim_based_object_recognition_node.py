@@ -68,20 +68,26 @@ class AirsimObjectDetection:
             self.drawn_image_pub_dict[camera_name] = temp_drawn_image_pub
             self.detected_obstacle_list_pub_dict[camera_name] = temp_obstacle_list_pub
 
+        rospy.loginfo("Created publishers!")
+
         # create airsim client
         self.client = airsim.MultirotorClient()
         self.client.confirmConnection()
+
+        rospy.loginfo("Connected to airsim!")
 
         # loop through all camera names and clear previus detection filter
         # settings
         for camera_name in self.camera_name_list:
             self.client.simClearDetectionMeshNames(camera_name, self.image_type)
+        rospy.loginfo("Cleared old detection mesh name regex pattern for cameras: {}".format(self.camera_name_list))
 
         # loop through all camera names and set detection filter radius
         # and mesh filer regex
         for camera_name in self.camera_name_list:
             self.client.simSetDetectionFilterRadius(camera_name, self.image_type, self.detection_radius)
             self.client.simAddDetectionFilterMeshName(camera_name, self.image_type, self.mesh_match_regex)
+        rospy.loginfo("Set new detection mesh name regex pattern for cameras: {}".format(self.camera_name_list))
 
         # if we got this far, return true
         return True
@@ -174,6 +180,7 @@ if(__name__ == "__main__"):
     # do simulation based object detection if
     # node could start
     if(start_status):
+        rospy.loginfo("Starting object detection loop!")
         airsim_obj_det.do_object_detection()
     else:
         rospy.logerr("could not start node!")
